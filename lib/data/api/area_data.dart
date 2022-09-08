@@ -6,12 +6,12 @@ class AreaData {
   static Future<List<String>> getArea() async {
     Response response = await Dio()
         .get('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
-    List<String> AreaList = [];
+    List<String> areaList = [];
     if (response.statusCode == 200) {
       for (int i = 0; i < response.data['meals'].length; i++) {
-        AreaList.add(response.data['meals'][i]['strArea']);
+        areaList.add(response.data['meals'][i]['strArea']);
       }
     }
-    return AreaList;
+    return areaList;
   }
 }

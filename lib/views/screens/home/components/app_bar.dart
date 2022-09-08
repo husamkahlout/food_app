@@ -12,7 +12,7 @@ AppBar HomeAppBar(BuildContext context) {
     backgroundColor: Colors.white,
     elevation: 0,
     leading: IconButton(
-      icon: SvgPicture.asset("assets/icons/menu.svg"),
+      icon: Icon(Icons.logout_rounded, color: Colors.grey.withOpacity(0.5)),
       onPressed: () {
         Provider.of<AuthProvider>(context, listen: false).signOut();
       },

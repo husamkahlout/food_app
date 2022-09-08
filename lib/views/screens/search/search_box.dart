@@ -18,17 +18,29 @@ class SearchBox extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         border: Border.all(
-          color: ksecondaryColor.withOpacity(0.32),
+          color:  ksecondaryColor.withOpacity(0.32),
         ),
       ),
       child: TextField(
-        onChanged: onChanged,
+        enabled: true ,
+        onChanged:  onChanged,
         decoration: InputDecoration(
           fillColor: Colors.white,
           border: InputBorder.none,
-          icon: SvgPicture.asset("assets/icons/search.svg",),
-          hintText: Provider.of<DioProvider>(context).searchController.text.isEmpty ? "Search Here" : Provider.of<DioProvider>(context).searchController.text ,
-          hintStyle: TextStyle(color: Provider.of<DioProvider>(context).searchController.text.isEmpty ? ksecondaryColor : Colors.black),
+          icon: SvgPicture.asset(
+            "assets/icons/search.svg",
+          ),
+          hintText:
+              Provider.of<DioProvider>(context).searchController.text.isEmpty
+                  ? "Search Here"
+                  : Provider.of<DioProvider>(context).searchController.text,
+          hintStyle: TextStyle(
+              color: Provider.of<DioProvider>(context)
+                      .searchController
+                      .text
+                      .isEmpty
+                  ? ksecondaryColor
+                  : Colors.black),
         ),
       ),
     );

@@ -32,8 +32,8 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Consumer2<DioProvider, AuthProvider>(
-            builder: (context, dioProvider, authProvider, x) {
+        child: Consumer<DioProvider>(
+            builder: (context, dioProvider, x) {
           return Column(
             children: [
               SearchBox(
@@ -44,147 +44,145 @@ class _SearchScreenState extends State<SearchScreen> {
                   });
                 },
               ),
-              SizedBox(
-                height: 1500,
-                child: FutureBuilder<List<MealModel>>(
-                  future: MealData.getMealByFirstChar(
-                      dioProvider.searchController.text),
-                  builder: (context, snapshot) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                          ),
-                          itemCount:
-                              snapshot.hasData ? snapshot.data!.length : 33,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MealDetailsScreen(
-                                            MealID: snapshot.data![index].idMeal
-                                                .toString())));
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.all(10),
-                                width: 160,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        offset: Offset(0, 2),
-                                        blurRadius: 5,
-                                        color: Color.fromARGB(76, 0, 0, 0),
-                                      )
-                                    ]),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.all(3),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                          color: Colors.grey.shade300,
-                                          image: snapshot.hasData
-                                              ? DecorationImage(
-                                                  image: NetworkImage(
-                                                    snapshot.data![index]
-                                                        .strMealThumb!,
-                                                  ),
-                                                  fit: BoxFit.cover)
-                                              : null,
-                                        ),
+              FutureBuilder<List<MealModel>>(
+                future: MealData.getMealByFirstChar(
+                    dioProvider.searchController.text),
+                builder: (context, snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemCount:
+                            snapshot.hasData ? snapshot.data!.length : 0,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MealDetailsScreen(
+                                          MealID: snapshot.data![index].idMeal
+                                              .toString())));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              width: 160,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      offset: Offset(0, 2),
+                                      blurRadius: 5,
+                                      color: Color.fromARGB(76, 0, 0, 0),
+                                    )
+                                  ]),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      margin: const EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(7),
+                                        color: Colors.grey.shade300,
+                                        image: snapshot.hasData
+                                            ? DecorationImage(
+                                                image: NetworkImage(
+                                                  snapshot.data![index]
+                                                      .strMealThumb!,
+                                                ),
+                                                fit: BoxFit.cover)
+                                            : null,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          snapshot.hasData
-                                              ? Text(
-                                                  snapshot
-                                                      .data![index].strMeal!,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                )
-                                              : Container(
-                                                  height: 15,
-                                                  width: 130,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7),
-                                                    color: Colors.grey.shade300,
-                                                  ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        snapshot.hasData
+                                            ? Text(
+                                                snapshot
+                                                    .data![index].strMeal!,
+                                                maxLines: 2,
+                                                overflow:
+                                                    TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w800,
                                                 ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              snapshot.hasData
-                                                  ? Text(
-                                                      snapshot.data![index]
-                                                              .strCategory! +
-                                                          ' - ' +
-                                                          snapshot.data![index]
-                                                              .strArea!,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        color: Colors
-                                                            .grey.shade500,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    )
-                                                  : Container(
-                                                      height: 15,
-                                                      width: 80,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
-                                                        color: Colors
-                                                            .grey.shade300,
-                                                      ),
+                                              )
+                                            : Container(
+                                                height: 15,
+                                                width: 130,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          7),
+                                                  color: Colors.grey.shade300,
+                                                ),
+                                              ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            snapshot.hasData
+                                                ? Text(
+                                                    snapshot.data![index]
+                                                            .strCategory! +
+                                                        ' - ' +
+                                                        snapshot.data![index]
+                                                            .strArea!,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .grey.shade500,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                     ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                                  )
+                                                : Container(
+                                                    height: 15,
+                                                    width: 80,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius
+                                                              .circular(7),
+                                                      color: Colors
+                                                          .grey.shade300,
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 3,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
-                            );
-                          }),
-                    );
-                  },
-                ),
+                            ),
+                          );
+                        }),
+                  );
+                },
               ),
             ],
           );
